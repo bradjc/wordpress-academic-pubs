@@ -11,6 +11,12 @@
 	*	This file create and contains the portfolio post_type meta elements
 	*	---------------------------------------------------------------------
 	*/
+
+	$wpap_options = array (
+		'category' => 'selected',
+		'numbered' => false,
+		'limit'    => -1,
+	);
 	
 	// Create basic outline for publications type
 	add_action('init', 'wpap_create_publication');
@@ -153,13 +159,52 @@
 		
 	}
 
+	/* Base function that returns a nice array of all the requested publications.
+	 * 
+	 * Each item in the array contains (if the values are stored):
+	 *  id
+	 *  title
+	 *  authors
+	 *  conference
+	 *  pdf_url
+	 *  bibtex_url
+	 *
+	 */
+	function wpap_get_pubs_array ($options) {
+
+		$pubs = array();
+
+		// query for the publications
+		$pubs_q = new WP_Query(array('post_type'            => 'publication',
+		                             'publication-category' => $options->category,
+		                             'posts_per_page'       => $options->limit)
+		                      );
+
+		while ($pubs_q->have_posts()) {
+			$pub = array();
+
+			$pubs_q->the_post();
+
+			$pub['id']         = $pubs->post->ID;
+			$pub['title']      = get_the_title();
+			$pub['authors']    = get_post_meta($post_id, 'wpap_publication-option-authors', true);
+			$pub['conference'] = get_post_meta($post_id, 'wpap_publication-option-conference', true);
+			$pub['pdf_url']    = get_post_meta($post_id, 'wpap_publication-option-paperpdf', true);
+			$pub['bibtex_url'] = get_post_meta($post_id, 'wpap_publication-option-bibtex', true);
+
+			$pubs[] = $pub;
+		}
+
+		return $pubs;
+	}
+
 	add_shortcode('academicpubs', 'wpap_shortcode');
 	function wpap_shortcode($atts) {
-		extract(shortcode_atts(array(
-			'category' => 'selected',
-			'numbered' => false,
-			'limit'    => -1,
-		), $atts));
+		global $wpap_options;
+
+		// makes all the options nice variables
+		// not sure if I like that, however...
+		$options = shortcode_atts($wpap_options, $atts);
 
 		$output = '<div class="wpap">';
 
@@ -168,7 +213,7 @@
 		}
 
 		$pubs = new WP_Query(array('post_type'            => 'publication',
-		                           'publication-category' => 'selected,extra',
+		                           'publication-category' => $category,
 		                           'posts_per_page'       => $limit)
 		                    );
 
@@ -218,7 +263,9 @@
 		return $output;
 	}
 
-
+	function wpap_get_publications ($options) {
+		return '<div class="wpap"></div>';
+	}
 
 
 	
