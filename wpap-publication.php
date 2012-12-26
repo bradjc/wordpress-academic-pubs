@@ -222,11 +222,7 @@
 		// get the publication data
 		$pubs = wpap_get_pubs_array($options);
 
-		$output = '<div class="wpap">';
-
-		if (strtolower($options['numbered']) == 'true') {
-			$output .= '<ol>';
-		}
+		$output = '';
 
 		foreach ($pubs as $pub) {
 			// Create the links string
@@ -243,24 +239,23 @@
 				$links_str = implode(' | ', $links);
 			}
 
-			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title publication'.$pub['id'].'">' . $pub['title'] . '</h2>';
+			$header = '<span class="publication-thumbnail-title post-title-color gdl-title publication'.$pub['id'].'">' . $pub['title'] . '</span>';
 			$body   = '<p>' . $pub['authors'] . '</p><p>' . $pub['conference'] . '</p>';
 
 			$pubout = $header . $body . ((count($links) > 0) ? $links_str : '');
 
-			if (strtolower($options['numbered']) == 'true') {
-				$output .= '<li>' . $pubout . '</li>';
-			} else {
-				$output .= $pubout;
-			}
+			$output .= '<li>' . $pubout . '</li>';
 
 		}
 
+		// Wrap output in list tags and a div for good measure
 		if (strtolower($options['numbered']) == 'true') {
-			$output .= '</ol>';
+			$output = '<ol>' . $output . '</ol>';
+		} else {
+			$output = '<ul>' . $output . '</ul>';
 		}
 
-		$output .= "</div>";
+		$output = '<div class="wpap">' . $output . '</div>';
 
 		return $output;
 
