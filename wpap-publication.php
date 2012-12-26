@@ -206,14 +206,14 @@
 		return $pubs;
 	}
 
-	add_shortcode('academicpubs', 'wpap_shortcode');
-	function wpap_shortcode($atts) {
-		global $wpap_options;
+	/* The second base function that takes the raw publication data and puts it
+	 * into nice html tags.
+	 *
+	 * Also needs the $options because some options are formatting related
+	 */
+	function wpap_get_pubs_formatted ($options) {
 
-		// makes all the options nice variables
-		// not sure if I like that, however...
-		$options = shortcode_atts($wpap_options, $atts);
-
+		// get the publication data
 		$pubs = wpap_get_pubs_array($options);
 
 		$output = '<div class="wpap">';
@@ -255,6 +255,17 @@
 		$output .= "</div>";
 
 		return $output;
+
+	}
+
+	add_shortcode('academicpubs', 'wpap_shortcode');
+	function wpap_shortcode($atts) {
+		global $wpap_options;
+
+		$options = shortcode_atts($wpap_options, $atts);
+
+		// call the function that does all the work
+		return wpap_get_pubs_formatted($options);
 	}
 
 	function wpap_get_publications ($options) {
