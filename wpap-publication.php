@@ -13,9 +13,11 @@
 	*/
 
 	$wpap_options = array (
-		'category' => '',
-		'numbered' => false,
-		'limit'    => -1,
+		'category'   => '',
+		'numbered'   => 'false',
+		'limit'      => -1,
+		'reverse'    => 'false',
+		'show_links' => 'true',
 	);
 	
 	// Create basic outline for publications type
@@ -174,10 +176,14 @@
 
 		$pubs = array();
 
+		$order = (strtolower($options['reverse']) == 'true') ? 'ASC' : 'DESC';
+
 		// query for the publications
 		$pubs_q = new WP_Query(array('post_type'            => 'publication',
 		                             'publication-category' => $options['category'],
-		                             'posts_per_page'       => $options['limit'])
+		                             'posts_per_page'       => $options['limit'],
+		                             'order'                => $order,
+		                            )
 		                      );
 
 		while ($pubs_q->have_posts()) {
@@ -218,29 +224,31 @@
 
 		$output = '<div class="wpap">';
 
-		if ($options['numbered']) {
+		if (strtolower($options['numbered']) == 'true') {
 			$output .= '<ol>';
 		}
 
 		foreach ($pubs as $pub) {
 			// Create the links string
 			$links = array();
-			if (!empty($pub['pdf_url'])) {
-				$link = '<a href="' . wp_get_attachment_url($pub['pdf_url']) . '">paper</a>';
-				array_push($links, $link);
+			if (strtolower($options['show_links']) == 'true') {
+				if (!empty($pub['pdf_url'])) {
+					$link = '<a href="' . wp_get_attachment_url($pub['pdf_url']) . '">paper</a>';
+					array_push($links, $link);
+				}
+				if (!empty($pub['bibtex_url'])) {
+					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
+					array_push($links, $link);
+				}
+				$links_str = implode(' | ', $links);
 			}
-			if (!empty($pub['bibtex_url'])) {
-				$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
-				array_push($links, $link);
-			}
-			$links_str = implode(' | ', $links);
 
 			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title publication'.$pub['id'].'">' . $pub['title'] . '</h2>';
 			$body   = '<p>' . $pub['authors'] . '</p><p>' . $pub['conference'] . '</p>';
 
 			$pubout = $header . $body . ((count($links) > 0) ? $links_str : '');
 
-			if ($options['numbered']) {
+			if (strtolower($options['numbered']) == 'true') {
 				$output .= '<li>' . $pubout . '</li>';
 			} else {
 				$output .= $pubout;
@@ -248,7 +256,7 @@
 
 		}
 
-		if ($options['numbered']) {
+		if (strtolower($options['numbered']) == 'true') {
 			$output .= '</ol>';
 		}
 
