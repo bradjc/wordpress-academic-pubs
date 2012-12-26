@@ -37,9 +37,8 @@
 			'publicly_queryable'  => true,
 			'exclude_from_search' => false,
 			'show_ui'             => true,
-			"show_in_nav_menus"        => false,
+			"show_in_nav_menus"   => false,
 			'menu_position'       => 5,
-		//	'menu_icon'           => GOODLAYERS_PATH . '/include/images/portfolio-icon.png',
 			'capability_type'     => 'post',
 			'hierarchical'        => false,
 			'supports'            => array('title'),
@@ -50,12 +49,11 @@
 		register_post_type('publication' , $args);
 		
 		register_taxonomy(
-			"publication-category", array("publication"), array(
-				"hierarchical"      => true, 
-				"label"             => "Publication Categories", 
-				"singular_label"    => "Publication Categories", 
-				"show_in_nav_menus" => false,
-				"rewrite"           => true));
+			'publication-category', array('publication'), array(
+				'hierarchical'      => true, 
+				'label'             => 'Publication Categories', 
+				'show_in_nav_menus' => false,
+				'rewrite'           => true));
 		register_taxonomy_for_object_type('publication-category', 'publication');
 		
 		flush_rewrite_rules();
@@ -158,13 +156,52 @@
 	add_shortcode('academicpubs', 'wpap_shortcode');
 	function wpap_shortcode($atts) {
 		extract(shortcode_atts(array(
-			'category' => '',
+			'category' => 'selected',
 			'numbered' => false,
+			'limit' => 1,
 		), $atts));
 
-		$ret = '<div class="wpapshort">' . $category . '</div>'
+		$output = '<div class="wpap">';
 
-		return $ret;
+		$pubs = new WP_Query(array('post_type'      => 'publication',
+		                           'publication-category'  => 'selected',
+		                           'posts_per_page' => '2')
+		                    );
+	
+		while ($pubs->have_posts()) {
+			$pubs->the_post();
+
+			$post_id    = $pubs->post->ID;
+			$authors    = get_post_meta($post_id, 'wpap_publication-option-authors', true);
+			$conference = get_post_meta($post_id, 'wpap_publication-option-conference', true);
+			$pdf        = get_post_meta($post_id, 'wpap_publication-option-paperpdf', true);
+			$bibtex     = get_post_meta($post_id, 'wpap_publication-option-bibtex', true);
+			
+			// Create the links string
+			$links = array();
+			if (!empty($pdf)) {
+				$link = '<a href="' . wp_get_attachment_url($pdf) . '">paper</a>';
+				array_push($links, $link);
+			}
+			if (!empty($bibtex)) {
+				$link = '<a href="' . wp_get_attachment_url($bibtex) . '">BibTex</a>';
+				array_push($links, $link);
+			}
+			$links_str = implode(' | ', $links);
+
+			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title">' . get_the_title() . '</h2>';
+			$body   = '<p>' . $authors . '</p><p>' . $conference . '</p>';
+
+			$output .= $header . $body . ((count($links) > 0) ? $links_str : '');
+		}
+
+		$output .= "</div>";
+
+		return $output;
 	}
+
+
+
+
 	
 ?>
