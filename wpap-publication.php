@@ -13,7 +13,7 @@
 	*/
 
 	$wpap_options = array (
-		'category' => 'selected',
+		'category' => '',
 		'numbered' => false,
 		'limit'    => -1,
 	);
@@ -176,8 +176,8 @@
 
 		// query for the publications
 		$pubs_q = new WP_Query(array('post_type'            => 'publication',
-		                             'publication-category' => $options->category,
-		                             'posts_per_page'       => $options->limit)
+		                             'publication-category' => $options['category'],
+		                             'posts_per_page'       => $options['limit'])
 		                      );
 
 		while ($pubs_q->have_posts()) {
@@ -185,12 +185,20 @@
 
 			$pubs_q->the_post();
 
-			$pub['id']         = $pubs->post->ID;
+			$pub['id']         = $pubs_q->post->ID;
 			$pub['title']      = get_the_title();
-			$pub['authors']    = get_post_meta($post_id, 'wpap_publication-option-authors', true);
-			$pub['conference'] = get_post_meta($post_id, 'wpap_publication-option-conference', true);
-			$pub['pdf_url']    = get_post_meta($post_id, 'wpap_publication-option-paperpdf', true);
-			$pub['bibtex_url'] = get_post_meta($post_id, 'wpap_publication-option-bibtex', true);
+			$pub['authors']    = get_post_meta($pub['id'], 'wpap_publication-option-authors', true);
+			$pub['conference'] = get_post_meta($pub['id'], 'wpap_publication-option-conference', true);
+			$pdf               = get_post_meta($pub['id'], 'wpap_publication-option-paperpdf', true);
+			$bibtex            = get_post_meta($pub['id'], 'wpap_publication-option-bibtex', true);
+
+			if (!empty($pdf)) {
+				$pub[pdf_url] = $pdf;
+			}
+
+			if (!empty($bibtex)) {
+				$pub[bibtex_url] = $bibtex;
+			}
 
 			$pubs[] = $pub;
 		}
@@ -206,59 +214,45 @@
 		// not sure if I like that, however...
 		$options = shortcode_atts($wpap_options, $atts);
 
+		$pubs = wpap_get_pubs_array($options);
+
 		$output = '<div class="wpap">';
 
-		if ($numbered) {
+		if ($options['numbered']) {
 			$output .= '<ol>';
 		}
 
-		$pubs = new WP_Query(array('post_type'            => 'publication',
-		                           'publication-category' => $category,
-		                           'posts_per_page'       => $limit)
-		                    );
-
-		while ($pubs->have_posts()) {
-			$pubs->the_post();
-
-			$post_id    = $pubs->post->ID;
-			$authors    = get_post_meta($post_id, 'wpap_publication-option-authors', true);
-			$conference = get_post_meta($post_id, 'wpap_publication-option-conference', true);
-			$pdf        = get_post_meta($post_id, 'wpap_publication-option-paperpdf', true);
-			$bibtex     = get_post_meta($post_id, 'wpap_publication-option-bibtex', true);
-			
+		foreach ($pubs as $pub) {
 			// Create the links string
 			$links = array();
-			if (!empty($pdf)) {
-				$link = '<a href="' . wp_get_attachment_url($pdf) . '">paper</a>';
+			if (!empty($pub['pdf_url'])) {
+				$link = '<a href="' . wp_get_attachment_url($pub['pdf_url']) . '">paper</a>';
 				array_push($links, $link);
 			}
-			if (!empty($bibtex)) {
-				$link = '<a href="' . wp_get_attachment_url($bibtex) . '">BibTex</a>';
+			if (!empty($pub['bibtex_url'])) {
+				$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
 				array_push($links, $link);
 			}
 			$links_str = implode(' | ', $links);
 
-			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title publication'.$post_id.'">' . get_the_title() . '</h2>';
-			$body   = '<p>' . $authors . '</p><p>' . $conference . '</p>';
+			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title publication'.$pub['id'].'">' . $pub['title'] . '</h2>';
+			$body   = '<p>' . $pub['authors'] . '</p><p>' . $pub['conference'] . '</p>';
 
-			$pub = $header . $body . ((count($links) > 0) ? $links_str : '');
+			$pubout = $header . $body . ((count($links) > 0) ? $links_str : '');
 
-			if ($numbered) {
-				$output .= '<li>' . $pub . '</li>';
+			if ($options['numbered']) {
+				$output .= '<li>' . $pubout . '</li>';
 			} else {
-				$output .= $pub;
+				$output .= $pubout;
 			}
 
 		}
 
-		if ($numbered) {
+		if ($options['numbered']) {
 			$output .= '</ol>';
 		}
 
 		$output .= "</div>";
-
-		wp_reset_query();
-		wp_reset_postdata();
 
 		return $output;
 	}
