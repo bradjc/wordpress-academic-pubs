@@ -268,8 +268,24 @@
 		return wpap_get_pubs_formatted($options);
 	}
 
-	function wpap_get_publications ($options) {
-		return '<div class="wpap"></div>';
+	/* Function to call in template to get array of publications.
+	 */
+	function wpap_get_publications ($options = array()) {
+		global $wpap_options;
+
+		$all_options = wpap_array_merge($wpap_options, $options);
+
+		return wpap_get_pubs_array($all_options);
+	}
+
+	/* Function to call in template to get formatted publications.
+	 */
+	function wpap_get_publications_formatted ($options = array()) {
+		global $wpap_options;
+
+		$all_options = wpap_array_merge($wpap_options, $options);
+
+		return wpap_get_pubs_formatted($all_options);
 	}
 
 

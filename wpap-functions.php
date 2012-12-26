@@ -101,4 +101,20 @@
 		}
 	}
 
+	/* Takes all key,value pairs from $changes and if the key is present in
+	 * $base, sets $base[key] equal to $changes[key].
+	 */
+	function wpap_array_merge ($base, $changes) {
+		if (!is_array($base) || !is_array($changes)) {
+			return;
+		}
+
+		foreach ($changes as $key => $value) {
+			if (array_key_exists($key, $base)) {
+				$base[$key] = $value;
+			}
+		}
+		return $base;
+	}
+
 ?>
