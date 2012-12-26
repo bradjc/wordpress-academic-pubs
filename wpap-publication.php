@@ -158,16 +158,20 @@
 		extract(shortcode_atts(array(
 			'category' => 'selected',
 			'numbered' => false,
-			'limit' => 1,
+			'limit'    => -1,
 		), $atts));
 
 		$output = '<div class="wpap">';
 
-		$pubs = new WP_Query(array('post_type'      => 'publication',
-		                           'publication-category'  => 'selected',
-		                           'posts_per_page' => '2')
+		if ($numbered) {
+			$output .= '<ol>';
+		}
+
+		$pubs = new WP_Query(array('post_type'            => 'publication',
+		                           'publication-category' => 'selected,extra',
+		                           'posts_per_page'       => $limit)
 		                    );
-	
+
 		while ($pubs->have_posts()) {
 			$pubs->the_post();
 
@@ -189,13 +193,27 @@
 			}
 			$links_str = implode(' | ', $links);
 
-			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title">' . get_the_title() . '</h2>';
+			$header = '<h2 class="publication-thumbnail-title post-title-color gdl-title publication'.$post_id.'">' . get_the_title() . '</h2>';
 			$body   = '<p>' . $authors . '</p><p>' . $conference . '</p>';
 
-			$output .= $header . $body . ((count($links) > 0) ? $links_str : '');
+			$pub = $header . $body . ((count($links) > 0) ? $links_str : '');
+
+			if ($numbered) {
+				$output .= '<li>' . $pub . '</li>';
+			} else {
+				$output .= $pub;
+			}
+
+		}
+
+		if ($numbered) {
+			$output .= '</ol>';
 		}
 
 		$output .= "</div>";
+
+		wp_reset_query();
+		wp_reset_postdata();
 
 		return $output;
 	}
