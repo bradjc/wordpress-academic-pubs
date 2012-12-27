@@ -1,25 +1,12 @@
 <?php
 
-	/*	
-	*	Goodlayers Portfolio Option File
-	*	---------------------------------------------------------------------
-	* 	@version	1.0
-	* 	@author		Goodlayers
-	* 	@link		http://goodlayers.com
-	* 	@copyright	Copyright (c) Goodlayers
-	*	---------------------------------------------------------------------
-	*	This file create and contains the portfolio post_type meta elements
-	*	---------------------------------------------------------------------
-	*/
 
-	$wpap_options = array (
-		'category'   => '',
-		'numbered'   => 'false',
-		'limit'      => -1,
-		'reverse'    => 'false',
-		'show_links' => 'true',
-	);
-	
+	//////////////////////////////////////////////
+	//
+	// ADMIN Section Functions
+	//
+	//////////////////////////////////////////////
+
 	// Create basic outline for publications type
 	add_action('init', 'wpap_create_publication');
 	function wpap_create_publication() {
@@ -145,7 +132,7 @@
 	
 		global $publication_meta_boxes;
 		
-				// save
+		// save
 		foreach ($publication_meta_boxes as $opt){
 		
 			if (isset($_POST[$opt['name']])) {	
@@ -160,6 +147,22 @@
 		}
 		
 	}
+
+
+	//////////////////////////////////////////////
+	//
+	// DISPLAY Section Functions
+	//
+	//////////////////////////////////////////////
+
+
+	$wpap_options = array (
+		'category'   => '',
+		'numbered'   => 'false',
+		'limit'      => -1,
+		'reverse'    => 'false',
+		'show_links' => 'true',
+	);
 
 	/* Base function that returns a nice array of all the requested publications.
 	 * 

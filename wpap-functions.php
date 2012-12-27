@@ -1,34 +1,17 @@
 <?php
 
-	/*	
-	*	Goodlayers Meta Template File
-	*	---------------------------------------------------------------------
-	* 	@version	1.0
-	* 	@author		Goodlayers
-	* 	@link		http://goodlayers.com
-	* 	@copyright	Copyright (c) Goodlayers
-	*	---------------------------------------------------------------------
-	*	This file contains the template of meta box for each input type.
-	* 	The framework will use it when create meta box for each post_type.
-	*	---------------------------------------------------------------------
-	*/
-	
-	// decide to print each meta box type
+	// how to print each meta box type
 	function wpap_print_option ($opt) {
 	
 		switch ($opt['type']) {
 			case "inputtext": wpap_print_option_input_text($opt); break;
 			case "upload":    wpap_print_meta_upload($opt); break;
-
 		}
-		
 	}
 	
 	// nonce Verification	
 	function wpap_set_nonce () {
-	
-		wp_nonce_field(plugin_basename(__FILE__), 'myplugin_noncename');
-		
+		wp_nonce_field(plugin_basename(__FILE__), 'wpap_pubnonce');	
 	}
 	
 	// text => name, title, value, default
@@ -72,8 +55,8 @@
 	
 		// Verification
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-		if (!isset($_POST['myplugin_noncename'])) return;
-		if (!wp_verify_nonce($_POST['myplugin_noncename'], plugin_basename( __FILE__ ))) return;
+		if (!isset($_POST['wpap_pubnonce'])) return;
+		if (!wp_verify_nonce($_POST['wpap_pubnonce'], plugin_basename( __FILE__ ))) return;
 		
 		if ($_POST['post_type'] == 'publication') {
 			if (!current_user_can('edit_post', $post_id)) return;
