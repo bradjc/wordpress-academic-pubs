@@ -235,11 +235,12 @@
 					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
 					array_push($links, $link);
 				}
-				$links_str = implode(' | ', $links);
+				$links_str = '<p class="publication-links">' . implode(' | ', $links) . '</p>';
 			}
 
-			$header = '<span class="publication-thumbnail-title post-title-color gdl-title publication'.$pub['id'].'">' . $pub['title'] . '</span>';
-			$body   = '<p>' . $pub['authors'] . '</p><p>' . $pub['conference'] . '</p>';
+			$header = '<span class="publication-title publication'.$pub['id'].'">' . $pub['title'] . '</span>';
+			$body   = '<p class="publication-authors">' . $pub['authors'] . '</p>';
+			$body  .= '<p class="publication-conference">' . $pub['conference'] . '</p>';
 
 			$pubout = $header . $body . ((count($links) > 0) ? $links_str : '');
 
