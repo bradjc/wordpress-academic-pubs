@@ -40,9 +40,9 @@
 		?>
 		
 		<input name="<?php echo $args['name']; ?>" type="hidden" id="upload_image_attachment_id" value="<?php echo esc_html($args['value']); ?>" />
-		<input id="upload_image_text_meta" type="text" value="<?php echo $src; ?>" size="30" />
+		<input id="upload_image_text_meta" type="text" value="<?php echo $src; ?>" style="width:80%" />
 		<input class="upload_image_button_meta" type="button" value="Upload" />
-		
+
 		<p><?php echo $args['extra']; ?></p>
 		
 		<?php

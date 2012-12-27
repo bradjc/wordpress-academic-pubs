@@ -1,22 +1,21 @@
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
+	var _orig_send_attachment = wp.media.editor.send.attachment;
 
-	jQuery('input:button.upload_image_button_meta').click(function() {
-	//	example_image =  jQuery(this).siblings("#meta-input-example-image");
-		upload_text = jQuery(this).siblings("#upload_image_text_meta");
+	$('input:button.upload_image_button_meta').click(function(e) {
+		var send_attachment_bkp = wp.media.editor.send.attachment;
+
+		upload_text   = jQuery(this).siblings("#upload_image_text_meta");
 		attachment_id = jQuery(this).siblings("#upload_image_attachment_id");
-		tb_show('Upload Media', 'media-upload.php?post_id=&type=image&amp;TB_iframe=true');
-		window.send_to_editor = function(html){
-			image_url = jQuery(html).attr('href');
-			thumb_url = jQuery('img',html).attr('src');
-			attid = jQuery(html).attr('attid');
-			
-			upload_text.val(image_url);
-			attachment_id.val(attid);
-	//		example_image.html('<img src=' + thumb_url + ' />');
-			tb_remove();
+
+		_custom_media = true;
+		wp.media.editor.send.attachment = function(props, attachment) {
+			upload_text.val(attachment.url);
+			attachment_id.val(attachment.id);
 		}
+		
+		wp.media.editor.open($(this));
 		return false;
 	});
-	
+
 });
