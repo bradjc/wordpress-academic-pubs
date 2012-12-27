@@ -8,7 +8,6 @@
 	//////////////////////////////////////////////
 
 	// Create basic outline for publications type
-	add_action('init', 'wpap_create_publication');
 	function wpap_create_publication() {
 	
 		$labels = array(
@@ -56,7 +55,6 @@
 	}
 	
 	// add table column in edit page
-	add_filter("manage_edit-publication_columns", "wpap_show_publication_column");	
 	function wpap_show_publication_column ($columns) {
 		$columns = array(
 			"cb" => "<input type=\"checkbox\" />",
@@ -65,7 +63,6 @@
 		return $columns;
 	}
 	
-	add_action("manage_posts_custom_column", "wpap_publication_custom_columns");
 	function wpap_publication_custom_columns ($column) {
 		global $post;
 
@@ -101,7 +98,6 @@
 		
 	);
 	
-	add_action('add_meta_boxes', 'wpap_add_publication_options');
 	function wpap_add_publication_options () {	
 	
 		global $publication_meta_boxes;
@@ -264,7 +260,6 @@
 
 	}
 
-	add_shortcode('academicpubs', 'wpap_shortcode');
 	function wpap_shortcode($atts) {
 		global $wpap_options;
 
@@ -294,6 +289,4 @@
 		return wpap_get_pubs_formatted($all_options);
 	}
 
-
-	
 ?>

@@ -26,47 +26,15 @@ add_action('admin_print_styles', 'wpap_styles');
 require_once('wpap-functions.php');
 require_once('wpap-publication.php');
 
-/*
-global $wpapl_prefix;
-$wpapl_prefix = "wpapl";
-global $wpapl_plugin_version;
-$wpapl_plugin_version = "0.1.3";
 
+add_filter('upload_mimes', 'wpap_add_bib_to_mimes');
+add_filter('manage_edit-publication_columns', 'wpap_show_publication_column');	
 
-// Include the CSS file to the plugin
-function admin_register_head() {
-	$siteurl = get_option('siteurl');
-	$url = $siteurl . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/style.css';
-	echo "<link rel='stylesheet' type='text/css' href='$url' />\n";
-}
-add_action('admin_head', 'admin_register_head');
+add_action('save_post', 'wpap_save_option_meta');
+add_action('init', 'wpap_create_publication');
+add_action('manage_posts_custom_column', 'wpap_publication_custom_columns');
+add_action('add_meta_boxes', 'wpap_add_publication_options');
 
-// Includes functions file
-	
+add_shortcode('academicpubs', 'wpap_shortcode');
 
-// Load CSS
-wp_enqueue_style( 'wpapl-style', get_option('siteurl') . '/wp-content/plugins/' . basename(dirname(__FILE__)) . '/style.css', false, false, 'all' );
-
-
-
-
-// Register the function that will be called when the plugin is activated
-register_activation_hook(__FILE__,'wpapl_install');
-
-
-// Includes the administrative menu file
-require_once('admin-panel.php');
-
-
-// Add shortcode
-require_once('shortcode.php');
-add_shortcode("academic-people-list", 'wpapl_shortcode_academic_people_list');
-add_shortcode("academic-research-areas", 'wpapl_shortcode_academic_reasearch_areas');
-add_shortcode("academic-projects", 'wpapl_shortcode_academic_projects');
-add_shortcode("academic-publications", 'wpapl_shortcode_academic_publications');
-
-
-
-
-*/
 ?>

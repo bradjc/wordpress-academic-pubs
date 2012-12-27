@@ -28,9 +28,7 @@
 
 	// text => name, title, value
 	function wpap_print_meta_upload ($args) {
-	
-	//	extract($args);
-	
+		
 		$src = '';
 		
 		if (!empty($args['value'])) {
@@ -49,8 +47,8 @@
 		
 	}
 
-	// save option function that trigger when saveing each post
-	add_action('save_post', 'wpap_save_option_meta');
+	/* save option function that trigger when saveing each post
+	 */
 	function wpap_save_option_meta ($post_id) {
 	
 		// Verification
@@ -66,19 +64,18 @@
 		
 	}
 	
-	// function that save the meta to database if new data is exists and is not equals to old one
+	/* function that save the meta to database if new data is exists and is not
+	 * equals to old one.
+	 */
 	function wpap_save_meta_data ($post_id, $new_data, $old_data, $name) {
 
-		if($new_data == $old_data){
-		
+		if ($new_data == $old_data) {
 			add_post_meta($post_id, $name, $new_data, true);
 			
-		}else if(!$new_data){
-		
+		} else if (!$new_data) {
 			delete_post_meta($post_id, $name, $old_data);
 			
-		}else if($new_data != $old_data){
-
+		} else if ($new_data != $old_data) {
 			update_post_meta($post_id, $name, $new_data, $old_data);
 			
 		}
@@ -98,6 +95,13 @@
 			}
 		}
 		return $base;
+	}
+
+	/* Add .bib files to allowed mime types.
+	 */
+	function wpap_add_bib_to_mimes ($existing_mimes) {
+ 		$existing_mimes['bib'] = 'text/plain';
+	 	return $existing_mimes; 
 	}
 
 ?>
