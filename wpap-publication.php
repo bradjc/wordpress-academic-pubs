@@ -153,11 +153,13 @@
 
 
 	$wpap_options = array (
-		'category'   => '',
-		'numbered'   => 'false',
-		'limit'      => -1,
-		'reverse'    => 'false',
-		'show_links' => 'true',
+		'category'     => '',
+		'numbered'     => 'false',
+		'limit'        => -1,
+		'reverse'      => 'false',
+		'show_links'   => 'true',
+		'page_num'     => '',
+		'num_per_page' => '',
 	);
 
 	/* Base function that returns a nice array of all the requested publications.
@@ -180,12 +182,19 @@
 		// query for the publications
 		$pubs_q = new WP_Query(array('post_type'            => 'publication',
 		                             'publication-category' => $options['category'],
-		                             'posts_per_page'       => $options['limit'],
 		                             'order'                => $order,
+		                             'paged'                => $options['page_num'],
+		                             'posts_per_page'       => $options['num_per_page'],
 		                            )
 		                      );
 
+		$count = 0;
 		while ($pubs_q->have_posts()) {
+			if ($count == $options['limit']) {
+				// only display that many
+				break;
+			}
+
 			$pub = array();
 
 			$pubs_q->the_post();
@@ -206,6 +215,7 @@
 			}
 
 			$pubs[] = $pub;
+			$count++;
 		}
 
 		return $pubs;

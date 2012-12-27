@@ -51,11 +51,13 @@ Options
 WPAP supports some options:
 
 ~~~~~~~
-category   => '',
-numbered   => 'false',
-limit      => -1,
-reverse    => 'false',
-show_links => 'true',
+category     => '',
+numbered     => 'false',
+limit        => -1,
+reverse      => 'false',
+show_links   => 'true',
+page_num     => '',
+num_per_page => '',
 ~~~~~~~
 
 
@@ -104,4 +106,23 @@ Example Output
 		</ul>
 	</div>
 
+
+Reasonable CSS
+--------------
+
+	.wpap .publication-title {
+		font-size: 110%;
+		font-weight: bold;
+	}
+	.wpap p {
+		margin: 0;
+		padding: 0;
+	}
+	.wpap ul {
+		list-style: none;
+		margin: 0;
+	}
+	.wpap li {
+		margin-bottom: 15px;
+	}
 
