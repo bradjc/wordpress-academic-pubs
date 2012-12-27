@@ -11,8 +11,7 @@ Author URI: http://bradcampbell.com/
 
 function wpap_scripts () {
 	wp_enqueue_media();
-	wp_enqueue_script('thickbox');
-	wp_register_script('wpap-js', plugins_url('/js/wpap.js', __FILE__), array('jquery','media-upload','thickbox'));
+	wp_register_script('wpap-js', plugins_url('/js/wpap.js', __FILE__), array('jquery'));
 	wp_enqueue_script('wpap-js');
 }
 
