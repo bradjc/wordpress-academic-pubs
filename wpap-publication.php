@@ -96,6 +96,11 @@
 			'type'  => 'upload',
 			'extra' => __('A .bib file containing the BibTex information.', 'wpap')),
 		array(
+			'title' => __('Slides (Powerpoint)', 'wpap'),
+			'name'  => 'wpap_publication-option-slidesppt',
+			'type'  => 'upload',
+			'extra' => __('The powerpoint version of the slides.', 'wpap')),
+		array(
 			'title' => __('Website', 'wpap'),
 			'name'  => 'wpap_publication-option-website',
 			'type'  => 'inputtext',
@@ -204,25 +209,14 @@
 
 			$pubs_q->the_post();
 
-			$pub['id']         = $pubs_q->post->ID;
-			$pub['title']      = get_the_title();
-			$pub['authors']    = get_post_meta($pub['id'], 'wpap_publication-option-authors', true);
-			$pub['conference'] = get_post_meta($pub['id'], 'wpap_publication-option-conference', true);
-			$pdf               = get_post_meta($pub['id'], 'wpap_publication-option-paperpdf', true);
-			$bibtex            = get_post_meta($pub['id'], 'wpap_publication-option-bibtex', true);
-			$website           = get_post_meta($pub['id'], 'wpap_publication-option-website', true);
-
-			if (!empty($pdf)) {
-				$pub['pdf_url'] = $pdf;
-			}
-
-			if (!empty($bibtex)) {
-				$pub['bibtex_url'] = $bibtex;
-			}
-
-			if (!empty($website)) {
-				$pub['website_url'] = $website;
-			}
+			$pub['id']          = $pubs_q->post->ID;
+			$pub['title']       = get_the_title();
+			$pub['authors']     = get_post_meta($pub['id'], 'wpap_publication-option-authors', true);
+			$pub['conference']  = get_post_meta($pub['id'], 'wpap_publication-option-conference', true);
+			$pub['pdf_url']     = get_post_meta($pub['id'], 'wpap_publication-option-paperpdf', true);
+			$pub['bibtex_url']  = get_post_meta($pub['id'], 'wpap_publication-option-bibtex', true);
+			$pub['slides_ppt']  = get_post_meta($pub['id'], 'wpap_publication-option-slidesppt', true);
+			$pub['website_url'] = get_post_meta($pub['id'], 'wpap_publication-option-website', true);
 
 			$pubs[] = $pub;
 			$count++;
@@ -253,6 +247,10 @@
 				}
 				if (!empty($pub['bibtex_url'])) {
 					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">' . __('BibTex', 'wpap') . '</a>';
+					array_push($links, $link);
+				}
+				if (!empty($pub['slides_ppt'])) {
+					$link = '<a href="' . wp_get_attachment_url($pub['slides_ppt']) . '">' . __('slides (ppt)', 'wpap') . '</a>';
 					array_push($links, $link);
 				}
 				if (!empty($pub['website_url'])) {
