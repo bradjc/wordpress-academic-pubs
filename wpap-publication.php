@@ -9,7 +9,7 @@
 
 	// Create basic outline for publications type
 	function wpap_create_publication() {
-	
+
 		$labels = array(
 			'name'               => _x('Publications', 'Publication General Name', 'gdl_back_office'),
 			'singular_name'      => _x('Publication Item', 'Publication Singular Name', 'gdl_back_office'),
@@ -24,7 +24,7 @@
 			'not_found_in_trash' => __('Nothing found in Trash', 'gdl_back_office'),
 			'parent_item_colon'  => ''
 		);
-		
+
 		$args = array(
 			'labels'              => $labels,
 			'public'              => true,
@@ -38,22 +38,22 @@
 			'supports'            => array('title'),
 			'rewrite'             => true,
 			'query_var'           => true
-		); 
-		  
+		);
+
 		register_post_type('publication' , $args);
-		
+
 		register_taxonomy(
 			'publication-category', array('publication'), array(
-				'hierarchical'      => true, 
-				'label'             => 'Publication Categories', 
+				'hierarchical'      => true,
+				'label'             => 'Publication Categories',
 				'show_in_nav_menus' => false,
 				'rewrite'           => true));
 		register_taxonomy_for_object_type('publication-category', 'publication');
-		
+
 		flush_rewrite_rules();
-		
+
 	}
-	
+
 	// add table column in edit page
 	function wpap_show_publication_column ($columns) {
 		$columns = array(
@@ -62,7 +62,7 @@
 			"publication-category" => "Publication Categories");
 		return $columns;
 	}
-	
+
 	function wpap_publication_custom_columns ($column) {
 		global $post;
 
@@ -72,9 +72,9 @@
 				break;
 		}
 	}
-	
+
 	// Setup the Publications edit page
-	$publication_meta_boxes = array(	
+	$publication_meta_boxes = array(
 		array(
 			'title' => 'Authors',
 			'name'  => 'wpap_publication-option-authors',
@@ -94,12 +94,17 @@
 			'title' => 'BibTex',
 			'name'  => 'wpap_publication-option-bibtex',
 			'type'  => 'upload',
-			'extra' => 'A .bib file containing the BibTex information.')
-		
+			'extra' => 'A .bib file containing the BibTex information.'),
+		array(
+			'title' => 'Website',
+			'name'  => 'wpap_publication-option-website',
+			'type'  => 'inputtext',
+			'extra' => 'A URL for the project/paper website.')
+
 	);
-	
-	function wpap_add_publication_options () {	
-	
+
+	function wpap_add_publication_options () {
+
 		global $publication_meta_boxes;
 
 		foreach ($publication_meta_boxes as $opt) {
@@ -111,37 +116,37 @@
 						 'high',
 						 $opt);
 		}
-			
+
 	}
-	
+
 	function wpap_add_publication_option_content ($post, $option) {
 		$option = $option['args'];
-	
+
 		wpap_set_nonce();
 
 		$option['value'] = get_post_meta($post->ID, $option['name'], true);
 		wpap_print_option($option);
 
 	}
-	
+
 	function wpap_save_publication_option_meta ($post_id) {
-	
+
 		global $publication_meta_boxes;
-		
+
 		// save
 		foreach ($publication_meta_boxes as $opt){
-		
-			if (isset($_POST[$opt['name']])) {	
-				$new_data = stripslashes($_POST[$opt['name']]);		
+
+			if (isset($_POST[$opt['name']])) {
+				$new_data = stripslashes($_POST[$opt['name']]);
 			} else {
 				$new_data = '';
 			}
-			
+
 			$old_data = get_post_meta($post_id, $opt['name'], true);
 			wpap_save_meta_data($post_id, $new_data, $old_data, $opt['name']);
-			
+
 		}
-		
+
 	}
 
 
@@ -163,7 +168,7 @@
 	);
 
 	/* Base function that returns a nice array of all the requested publications.
-	 * 
+	 *
 	 * Each item in the array contains (if the values are stored):
 	 *  id
 	 *  title
@@ -205,13 +210,18 @@
 			$pub['conference'] = get_post_meta($pub['id'], 'wpap_publication-option-conference', true);
 			$pdf               = get_post_meta($pub['id'], 'wpap_publication-option-paperpdf', true);
 			$bibtex            = get_post_meta($pub['id'], 'wpap_publication-option-bibtex', true);
+			$website           = get_post_meta($pub['id'], 'wpap_publication-option-website', true);
 
 			if (!empty($pdf)) {
-				$pub[pdf_url] = $pdf;
+				$pub['pdf_url'] = $pdf;
 			}
 
 			if (!empty($bibtex)) {
-				$pub[bibtex_url] = $bibtex;
+				$pub['bibtex_url'] = $bibtex;
+			}
+
+			if (!empty($website)) {
+				$pub['website_url'] = $website;
 			}
 
 			$pubs[] = $pub;
@@ -243,6 +253,10 @@
 				}
 				if (!empty($pub['bibtex_url'])) {
 					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
+					array_push($links, $link);
+				}
+				if (!empty($pub['website_url'])) {
+					$link = '<a href="' . $pub['website_url'] . '">website</a>';
 					array_push($links, $link);
 				}
 				$links_str = '<p class="publication-links">' . implode(' | ', $links) . '</p>';
