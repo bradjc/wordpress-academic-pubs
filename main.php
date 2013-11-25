@@ -19,6 +19,10 @@ function wpap_styles () {
 	wp_enqueue_style('thickbox');
 }
 
+function wpap_loadtextdomain() {
+	load_plugin_textdomain('wpap', false, basename(dirname(__FILE__)) . '/languages/' );
+}
+
 add_action('admin_print_scripts', 'wpap_scripts');
 add_action('admin_print_styles', 'wpap_styles');
 
@@ -27,7 +31,7 @@ require_once('wpap-publication.php');
 
 
 add_filter('upload_mimes', 'wpap_add_bib_to_mimes');
-add_filter('manage_edit-publication_columns', 'wpap_show_publication_column');	
+add_filter('manage_edit-publication_columns', 'wpap_show_publication_column');
 
 add_action('save_post', 'wpap_save_option_meta');
 add_action('init', 'wpap_create_publication');
@@ -35,5 +39,7 @@ add_action('manage_posts_custom_column', 'wpap_publication_custom_columns');
 add_action('add_meta_boxes', 'wpap_add_publication_options');
 
 add_shortcode('academicpubs', 'wpap_shortcode');
+
+add_action('plugins_loaded', 'wpap_loadtextdomain');
 
 ?>

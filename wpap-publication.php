@@ -11,17 +11,17 @@
 	function wpap_create_publication() {
 
 		$labels = array(
-			'name'               => _x('Publications', 'Publication General Name', 'gdl_back_office'),
-			'singular_name'      => _x('Publication Item', 'Publication Singular Name', 'gdl_back_office'),
-			'add_new'            => _x('Add New', 'Add New Publication Name', 'gdl_back_office'),
-			'all_items'          => __('All Publications'),
-			'add_new_item'       => __('Add New Publication', 'gdl_back_office'),
-			'edit_item'          => __('Edit Publication', 'gdl_back_office'),
-			'new_item'           => __('New Publication', 'gdl_back_office'),
-			'view_item'          => __('View Publication'),
-			'search_items'       => __('Search Publications', 'gdl_back_office'),
-			'not_found'          => __('Nothing found', 'gdl_back_office'),
-			'not_found_in_trash' => __('Nothing found in Trash', 'gdl_back_office'),
+			'name'               => _x('Publications', 'Publication General Name', 'wpap'),
+			'singular_name'      => _x('Publication Item', 'Publication Singular Name', 'wpap'),
+			'add_new'            => _x('Add New', 'Add New Publication Name', 'wpap'),
+			'all_items'          => __('All Publications', 'wpap'),
+			'add_new_item'       => __('Add New Publication', 'wpap'),
+			'edit_item'          => __('Edit Publication', 'wpap'),
+			'new_item'           => __('New Publication', 'wpap'),
+			'view_item'          => __('View Publication', 'wpap'),
+			'search_items'       => __('Search Publications', 'wpap'),
+			'not_found'          => __('Nothing found', 'wpap'),
+			'not_found_in_trash' => __('Nothing found in Trash', 'wpap'),
 			'parent_item_colon'  => ''
 		);
 
@@ -45,7 +45,7 @@
 		register_taxonomy(
 			'publication-category', array('publication'), array(
 				'hierarchical'      => true,
-				'label'             => 'Publication Categories',
+				'label'             => __('Publication Categories', 'wpap'),
 				'show_in_nav_menus' => false,
 				'rewrite'           => true));
 		register_taxonomy_for_object_type('publication-category', 'publication');
@@ -57,9 +57,9 @@
 	// add table column in edit page
 	function wpap_show_publication_column ($columns) {
 		$columns = array(
-			"cb" => "<input type=\"checkbox\" />",
-			"title" => "Title",
-			"publication-category" => "Publication Categories");
+			'cb' => '<input type="checkbox" />',
+			'title' => 'Title',
+			'publication-category' => __('Publication Categories', 'wpap'));
 		return $columns;
 	}
 
@@ -67,7 +67,7 @@
 		global $post;
 
 		switch ($column) {
-			case "publication-category":
+			case 'publication-category':
 				echo get_the_term_list($post->ID, 'publication-category', '', ', ','');
 				break;
 		}
@@ -76,30 +76,30 @@
 	// Setup the Publications edit page
 	$publication_meta_boxes = array(
 		array(
-			'title' => 'Authors',
+			'title' => __('Authors', 'wpap'),
 			'name'  => 'wpap_publication-option-authors',
 			'type'  => 'inputtext',
-			'extra' => 'List of authors on the paper.'),
+			'extra' => __('List of authors on the paper.', 'wpap')),
 		array(
-			'title' => 'Conference',
+			'title' => __('Conference', 'wpap'),
 			'name'  => 'wpap_publication-option-conference',
 			'type'  => 'inputtext',
-			'extra' => 'Conference, year, and description.'),
+			'extra' => __('Conference, year, and description.', 'wpap')),
 		array(
-			'title' => 'Paper PDF',
+			'title' => __('Paper PDF', 'wpap'),
 			'name'  => 'wpap_publication-option-paperpdf',
 			'type'  => 'upload',
-			'extra' => 'The PDF of the paper.'),
+			'extra' => __('The PDF of the paper.', 'wpap')),
 		array(
-			'title' => 'BibTex',
+			'title' => __('BibTex', 'wpap'),
 			'name'  => 'wpap_publication-option-bibtex',
 			'type'  => 'upload',
-			'extra' => 'A .bib file containing the BibTex information.'),
+			'extra' => __('A .bib file containing the BibTex information.', 'wpap')),
 		array(
-			'title' => 'Website',
+			'title' => __('Website', 'wpap'),
 			'name'  => 'wpap_publication-option-website',
 			'type'  => 'inputtext',
-			'extra' => 'A URL for the project/paper website.')
+			'extra' => __('A URL for the project/paper website.', 'wpap'))
 
 	);
 
@@ -248,15 +248,15 @@
 			$links = array();
 			if (strtolower($options['show_links']) == 'true') {
 				if (!empty($pub['pdf_url'])) {
-					$link = '<a href="' . wp_get_attachment_url($pub['pdf_url']) . '">paper</a>';
+					$link = '<a href="' . wp_get_attachment_url($pub['pdf_url']) . '">' . __('paper', 'wpap') . '</a>';
 					array_push($links, $link);
 				}
 				if (!empty($pub['bibtex_url'])) {
-					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">BibTex</a>';
+					$link = '<a href="' . wp_get_attachment_url($pub['bibtex_url']) . '">' . __('BibTex', 'wpap') . '</a>';
 					array_push($links, $link);
 				}
 				if (!empty($pub['website_url'])) {
-					$link = '<a href="' . $pub['website_url'] . '">website</a>';
+					$link = '<a href="' . $pub['website_url'] . '">' . __('website', 'wpap') . '</a>';
 					array_push($links, $link);
 				}
 				$links_str = '<p class="publication-links">' . implode(' | ', $links) . '</p>';

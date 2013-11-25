@@ -1,0 +1,111 @@
+# Academic Publications for Wordpress.
+# Brad Campbell <bradjc5@gmail.com>.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Academic Publications 1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-24 22:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wpap-publication.php:14
+msgid "Publications"
+msgstr ""
+
+#: wpap-publication.php:15
+msgid "Publication Item"
+msgstr ""
+
+#: wpap-publication.php:16
+msgid "Add New"
+msgstr ""
+
+#: wpap-publication.php:17
+msgid "All Publications"
+msgstr ""
+
+#: wpap-publication.php:18
+msgid "Add New Publication"
+msgstr ""
+
+#: wpap-publication.php:19
+msgid "Edit Publication"
+msgstr ""
+
+#: wpap-publication.php:20
+msgid "New Publication"
+msgstr ""
+
+#: wpap-publication.php:21
+msgid "View Publication"
+msgstr ""
+
+#: wpap-publication.php:22
+msgid "Search Publications"
+msgstr ""
+
+#: wpap-publication.php:23
+msgid "Nothing found"
+msgstr ""
+
+#: wpap-publication.php:24
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: wpap-publication.php:48 wpap-publication.php:62
+msgid "Publication Categories"
+msgstr ""
+
+#: wpap-publication.php:79
+msgid "Authors"
+msgstr ""
+
+#: wpap-publication.php:84
+msgid "Conference"
+msgstr ""
+
+#: wpap-publication.php:89
+msgid "Paper PDF"
+msgstr ""
+
+#: wpap-publication.php:94 wpap-publication.php:255
+msgid "BibTex"
+msgstr ""
+
+#: wpap-publication.php:99
+msgid "Website"
+msgstr ""
+
+#: wpap-publication.php:251
+msgid "paper"
+msgstr ""
+
+#: wpap-publication.php:259
+msgid "website"
+msgstr ""
+
+#: wpap-publication.php:82
+msgid "List of authors on the paper."
+msgstr ""
+
+#: wpap-publication.php:87
+msgid "Conference, year, and description."
+msgstr ""
+
+#: wpap-publication.php:92
+msgid "The PDF of the paper."
+msgstr ""
+
+#: wpap-publication.php:97
+msgid "A .bib file containing the BibTex information."
+msgstr ""
+
+#: wpap-publication.php:102
+msgid "A URL for the project/paper website."
+msgstr ""
