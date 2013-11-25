@@ -1,10 +1,10 @@
 === WP Academic Publications ===
 Contributors: bman12
-Donate link: 
+Donate link:
 Tags: publications, academic
 Requires at least: 3.5
-Tested up to: 3.5
-Stable tag: 1.0
+Tested up to: 3.7.1
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,9 +49,10 @@ You can use one of the two php functions anywhere in a template.
  *
  * $options: array('option' => 'value')
  *
- * Returns: [['id':1, 'title':'Paper Name', 'pdf_url':'http://a.com'], 
+ * Returns: [['id':1, 'title':'Paper Name', 'pdf_url':'http://a.com'],
  *           [another pub...]]
- *          fields are: id, title, authors, conference, pdf_url, bibtex_url
+ *          fields are: id, title, authors, conference, pdf_url, bibtex_url,
+ *                      slides_ppt, website_url
  */
 wpap_display_publications($options);
 
@@ -73,7 +74,7 @@ foreach ($pubs as $pub) {
 ?>
 `
 
-or 
+or
 
 `
 <?php
@@ -92,7 +93,7 @@ echo wpap_display_publications_formatted($opts);
             <span class="publication-title publication1">Pub1 Title</span>
             <p class="publication-authors">Tom Smith and Eva Newn</p>
             <p class="publication-conference">Conference 1</p>
-            <p class="publication-links"><a href="paper.pdf">paper</a> | <a href="paper.bib">BibTex</a></p>
+            <p class="publication-links"><a href="paper.pdf">paper</a> | <a href="paper.bib">BibTex</a> | <a href="slides.pptx">slides (ppt)</a> | <a href="http://website.com">website</a></p>
         </li>
         <li>
             <span class="publication-title publication531">Pub2 Title</span>
@@ -129,6 +130,9 @@ echo wpap_display_publications_formatted($opts);
 
 
 == Changelog ==
+
+1.1: Added slides and website.
+     Better support for translation.
 
 1.0: Initial release
 
