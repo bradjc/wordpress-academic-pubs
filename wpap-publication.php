@@ -169,7 +169,7 @@
 		'reverse'      => 'false',
 		'show_links'   => 'true',
 		'page_num'     => '',
-		'num_per_page' => '',
+		'num_per_page' => -1,
 	);
 
 	/* Base function that returns a nice array of all the requested publications.

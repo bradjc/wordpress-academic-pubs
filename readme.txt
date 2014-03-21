@@ -3,8 +3,8 @@ Contributors: bman12
 Donate link:
 Tags: publications, academic
 Requires at least: 3.5
-Tested up to: 3.7.1
-Stable tag: 1.1
+Tested up to: 3.8.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,11 +125,18 @@ echo wpap_display_publications_formatted($opts);
 }
 `
 
+= Support =
+
+Please go to https://github.com/bradjc/wordpress-academic-pubs if you have
+any issues.
+
 == Screenshots ==
 
 
 
 == Changelog ==
+
+1.2: Fixed issue where only 10 publications would display.
 
 1.1: Added slides and website.
      Better support for translation.
