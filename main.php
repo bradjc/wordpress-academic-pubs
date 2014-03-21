@@ -3,7 +3,7 @@
 Plugin Name: WP Academic Publications
 Plugin URI: https://github.com/bradjc/wordpress-academic-pubs
 Description: Adds a Publications tab to wordpress. Allows authors to add a list of academic publications to the blog.
-Version: 1.1
+Version: 1.2
 Author: Brad Campbell
 Author URI: http://bradcampbell.com/
 */
