@@ -50,9 +50,16 @@
 				'rewrite'           => true));
 		register_taxonomy_for_object_type('publication-category', 'publication');
 
-		flush_rewrite_rules();
-
 	}
+
+	// Flush rewrite on plugin activation
+	function wpap_flush_rewrites() {
+		// call your CPT registration function here (it should also be hooked into 'init')
+		wpsap_create_publication();
+		// flush the rules
+		flush_rewrite_rules();
+	}
+	register_activation_hook( __FILE__, 'wpap_flush_rewrites' );
 
 	// add table column in edit page
 	function wpap_show_publication_column ($columns) {
